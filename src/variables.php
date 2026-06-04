@@ -876,11 +876,30 @@ class qtype_numericalrecit_variables {
                     if (!($typestr == 's,ln,n' || $typestr == 's,n,ln' || $typestr == 's,ln,ln'))  break;
                     if ($types[1] != 'ln')  $values[1] = array_fill(0, qtype_numericalrecit_utils::mycount($values[2]), $values[1]);
                     if ($types[2] != 'ln')  $values[2] = array_fill(0, qtype_numericalrecit_utils::mycount($values[1]), $values[2]);
-                    if (array_key_exists($values[0], $this->binary_op_map))
-                        // The create_function function is deprecated since php 7.2.
-                        // $value = array_map(create_function('$a,$b', 'return floatval(($a)'.$values[0].'($b));'), $values[1], $values[2]);
-                        $value = array_map(function ($a, $b) use ($values){return eval( 'return floatval(($a)'.$values[0].'($b));');}, $values[1], $values[2]);
-                    else if (array_key_exists($values[0], $this->func_binary)) {
+                    if (array_key_exists($values[0], $this->binary_op_map)) {
+                        $op = $values[0];
+                        $value = array_map(function ($a, $b) use ($op) {
+                            switch ($op) {
+                                case '+':  return floatval($a + $b);
+                                case '-':  return floatval($a - $b);
+                                case '*':  return floatval($a * $b);
+                                case '/':  return floatval($a / $b);
+                                case '%':  return floatval(fmod(floatval($a), floatval($b)));
+                                case '>':  return floatval($a > $b);
+                                case '<':  return floatval($a < $b);
+                                case '==': return floatval($a == $b);
+                                case '!=': return floatval($a != $b);
+                                case '&&': return floatval($a && $b);
+                                case '||': return floatval($a || $b);
+                                case '&':  return floatval(intval($a) & intval($b));
+                                case '|':  return floatval(intval($a) | intval($b));
+                                case '<<': return floatval(intval($a) << intval($b));
+                                case '>>': return floatval(intval($a) >> intval($b));
+                                case '^':  return floatval(intval($a) ^ intval($b));
+                                default:   return 0.0;
+                            }
+                        }, $values[1], $values[2]);
+                    } else if (array_key_exists($values[0], $this->func_binary)) {
                         // The create_function function is deprecated since php 7.2.
                         // $value = array_map(create_function('$a,$b', 'return floatval('.$values[0].'($a,$b));'), $values[1], $values[2]);
                         $value = array_map(function ($a, $b) use ($values){return floatval($values[0]($a, $b));}, $values[1], $values[2]);

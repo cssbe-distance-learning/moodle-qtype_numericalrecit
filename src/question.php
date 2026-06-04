@@ -566,7 +566,7 @@ class qtype_numericalrecit_question extends question_graded_automatically_with_c
                 $totalvalue += $part->answermark;
             }
         } catch (Exception $e) {
-            notify('Grading error! Probably result of incorrect import file or database corruption.');
+            \core\notification::error('Grading error! Probably result of incorrect import file or database corruption.');
             return false; // It should have no error when grading students question.
         }
 

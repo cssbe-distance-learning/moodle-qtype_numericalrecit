@@ -29,9 +29,10 @@ function qtype_numericalrecit_pluginfile($course, $cm, $context, $filearea, $arg
     global $CFG;
     require_once($CFG->libdir . '/questionlib.php');
     if (in_array($filearea, array('stepfeedback', 'intro'))) {
+        $itemid = array_shift($args);
         $relativepath = implode('/', $args);
 
-        $fullpath = "/$context->id/qtype_numericalrecit/{$filearea}$itemId/$relativepath";
+        $fullpath = "/$context->id/qtype_numericalrecit/{$filearea}/{$itemid}/{$relativepath}";
 
         $fs = get_file_storage();
 		$file = $fs->get_file_by_hash(sha1($fullpath));		

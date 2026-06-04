@@ -28,6 +28,8 @@ define('AJAX_SCRIPT', true);
 require_once(__DIR__ . '/../../../config.php');
 require_once(__DIR__ . '/variables.php');
 
+require_login();
+
 $qv = new qtype_numericalrecit_variables();
 
 // Given the variable assignments, it try to instantiate multiple datasets and return a data structure used by javascript.
@@ -179,7 +181,7 @@ try {
     header('Content-type: application/json; charset=utf-8');
     echo $res;
 } catch (Exception $e) {
-    var_dump($e);
-    // Prevent the display of all errors.
+    header('Content-type: application/json; charset=utf-8');
+    echo json_encode(['error' => $e->getMessage()]);
 }
 

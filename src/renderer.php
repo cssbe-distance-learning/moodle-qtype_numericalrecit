@@ -51,7 +51,7 @@ class qtype_numericalrecit_renderer extends qtype_with_combined_feedback_rendere
 
         // TODO: is this really necessary here ? If question is damaged it should have been detected before.
         if (count($question->textfragments) != $question->get_number_of_parts() + 1) {
-            notify('Error: Question is damaged, number of text fragments and number of question parts are not equal.');
+            \core\notification::error('Error: Question is damaged, number of text fragments and number of question parts are not equal.');
             return;
         }
 
@@ -118,7 +118,11 @@ class qtype_numericalrecit_renderer extends qtype_with_combined_feedback_rendere
             }
 
             if($takePictureExist){
-                $result .= "<button type='button' data-take-picture-btn-id='$editorBtnId' class='btn btn-primary d-block m-auto'><i class='fa fa-camera'></i> ". get_string('takephoto', 'qtype_numericalrecit')."</button>";
+                $result .= html_writer::tag(
+                    'button',
+                    '<i class="fa fa-camera"></i> ' . get_string('takephoto', 'qtype_numericalrecit'),
+                    ['type' => 'button', 'data-take-picture-btn-id' => $editorBtnId, 'class' => 'btn btn-primary d-block m-auto']
+                );
             }
             
             $result .= $responseoutput->response_area_input('stepn', $qa, $step, 12, $options->context, $question->stepmark);
@@ -440,7 +444,7 @@ class qtype_numericalrecit_renderer extends qtype_with_combined_feedback_rendere
         }
 
         foreach ($inputs as $placeholder => $replacement) {
-            $subqreplaced = preg_replace('/'.$boxes[$placeholder]->pattern.'/', $replacement, $subqreplaced, 1);
+            $subqreplaced = preg_replace('/'.preg_quote($boxes[$placeholder]->pattern, '/').'/', $replacement, $subqreplaced, 1);
         }
         return $subqreplaced;
     }
