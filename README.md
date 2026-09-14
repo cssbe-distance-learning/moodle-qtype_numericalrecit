@@ -16,3 +16,6 @@ Reference to the authors of the formulas question: <a href='https://moodleformul
 
 # Further information
 <a href='https://htmlpreview.github.io/?https://github.com/SN-RECIT-formation-a-distance/moodle-qtype_numericalrecit/blob/master/docs/question-formule-demarche-recit.html' target='_blank'>User documentation (in French)</a>
+
+## Marketplace Moodle
+This plugin is also available on the **Moodle Plugin Marketplace**: [https://marketplace.moodle.com/plugins/2680](https://marketplace.moodle.com/plugins/2680)
